@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "596982415375",
+    "firebase_url": "https://be-iot-system-default-rtdb.firebaseio.com",
+    "project_id": "be-iot-system",
+    "storage_bucket": "be-iot-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596982415375:android:4d6d2eae09d1e543c9637a",
+        "android_client_info": {
+          "package_name": "com.domotica.be_lot_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596982415375-mvhp80duk76bi2rd2mvop601g63u43t0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.domotica.be_lot_system",
+            "certificate_hash": "0e397a5131a6866780cb05ac10ab0efb5a9895c2"
+          }
+        },
+        {
+          "client_id": "596982415375-asdvlqf039gm59fmophpcc7nfm2c5172.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv8myeOban8zaBxrgtDA0E7LJEqVEsxyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596982415375-asdvlqf039gm59fmophpcc7nfm2c5172.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
