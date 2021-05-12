@@ -1,4 +1,5 @@
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
+import 'package:be_lot_system/src/ui/client/confirm_registration.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,6 @@ class _FormState extends State<Form> {
                           Theme(
                               data: ThemeData(primaryColor: Colors.purple),
                               child: TextField(
-                                autofocus: true,
                                 controller: mailController,
                                 style: TextStyle(fontSize: 20.0),
                                 decoration: InputDecoration(
@@ -137,53 +137,77 @@ class _FormState extends State<Form> {
                               )),
                           Padding(padding: EdgeInsets.only(bottom: 30.0)),
                           Material(
-                            elevation: 5.0,
-                            borderRadius: BorderRadius.circular(25.0),
-                            color: Colors.purple[200],
-                            child: MaterialButton(
-                              padding:
-                                  EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                              child: Text(
-                                'Iniciar sesión',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              onPressed: () async {
-                                try {
-                                  UserCredential userCredential =
-                                      await FirebaseAuth
-                                          .instance
-                                          .signInWithEmailAndPassword(
-                                              email: mailController.text,
-                                              password:
-                                                  passwordController.text);
+                              elevation: 5.0,
+                              borderRadius: BorderRadius.circular(25.0),
+                              color: Colors.purple[200],
+                              child: MaterialButton(
+                                  padding: EdgeInsets.fromLTRB(
+                                      30.0, 15.0, 30.0, 15.0),
+                                  child: Text(
+                                    'Iniciar sesión',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () async {
+                                    try {
+                                      UserCredential userCredential =
+                                          await FirebaseAuth.instance
+                                              .signInWithEmailAndPassword(
+                                                  email: mailController.text,
+                                                  password:
+                                                      passwordController.text);
 
-                                  if (userCredential != null) {
-                                    _ensureLoggedIn(userCredential);
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => IndexAdmin()),
-                                        (Route<dynamic> route) => false);
-                                  }
-                                } catch (e) {
-                                  if (e.code == 'user-not-found') {
-                                    print('No user found for that email.');
-                                    showWarning(context);
-                                  } else if (e.code == 'wrong-password') {
-                                    print(
-                                        'Wrong password provided for that user.');
-                                    showWarning(context);
-                                  } else {
-                                    print('ERROR*********************');
-                                    showError(context);
-                                  }
-                                }
-                              },
-                            ),
-                          )
+                                      if (userCredential != null) {
+                                        _ensureLoggedIn(userCredential);
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        IndexAdmin()),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                      }
+                                    } catch (e) {
+                                      if (e.code == 'user-not-found') {
+                                        print('No user found for that email.');
+                                        showWarning(context);
+                                      } else if (e.code == 'wrong-password') {
+                                        print(
+                                            'Wrong password provided for that user.');
+                                        showWarning(context);
+                                      } else {
+                                        print('ERROR*********************');
+                                        showError(context);
+                                      }
+                                    }
+                                  })),
+                          Padding(
+                              padding: EdgeInsets.only(top: 20),
+                              child: Material(
+                                  elevation: 5.0,
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  color: Colors.pink[200],
+                                  child: MaterialButton(
+                                      padding: EdgeInsets.fromLTRB(
+                                          30.0, 15.0, 30.0, 15.0),
+                                      child: Text(
+                                        'Registrarse',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () async {
+                                        await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ConfirmRegistration()));
+                                      })))
                         ]))))));
   }
 
