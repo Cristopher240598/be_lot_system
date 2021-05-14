@@ -1,13 +1,8 @@
-import 'package:be_lot_system/src/model/client.dart';
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class CreateClient extends StatefulWidget {
-  final Client client;
-
-  CreateClient(this.client);
-
   @override
   _CreateClientState createState() => _CreateClientState();
 }
@@ -82,7 +77,7 @@ class _CreateClientState extends State<CreateClient> {
                               child: Column(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                  padding: EdgeInsets.only(right: 8),
                                   child: Theme(
                                       data: ThemeData(
                                           primaryColor: Colors.purple),
@@ -101,7 +96,7 @@ class _CreateClientState extends State<CreateClient> {
                               child: Column(
                             children: [
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                  padding: EdgeInsets.only(left: 8),
                                   child: Theme(
                                       data: ThemeData(
                                           primaryColor: Colors.purple),

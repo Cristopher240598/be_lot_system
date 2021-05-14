@@ -1,3 +1,4 @@
+import 'package:be_lot_system/src/ui/client/complete_registration.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -75,13 +76,12 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                             textInputAction: TextInputAction.next,
                           )),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                              child: Column(
-                            children: [
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                                child: Column(children: [
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                  padding: EdgeInsets.only(right: 8),
                                   child: Theme(
                                       data: ThemeData(
                                           primaryColor: Colors.purple),
@@ -93,14 +93,12 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                         ),
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.next,
-                                      ))),
-                            ],
-                          )),
-                          Expanded(
-                              child: Column(
-                            children: [
+                                      )))
+                            ])),
+                            Expanded(
+                                child: Column(children: [
                               Padding(
-                                  padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                  padding: EdgeInsets.only(left: 8),
                                   child: Theme(
                                       data: ThemeData(
                                           primaryColor: Colors.purple),
@@ -113,10 +111,8 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                         keyboardType: TextInputType.text,
                                         textInputAction: TextInputAction.next,
                                       ))),
-                            ],
-                          ))
-                        ],
-                      ),
+                            ]))
+                          ]),
                       Padding(
                           padding: EdgeInsets.fromLTRB(0, 40, 0, 20),
                           child: Material(
@@ -220,8 +216,13 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                                           curretList
                                                               .add(orderData);
                                                         });
-                                                        showWarning(context,
-                                                            "SI EXISTE");
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    CompleteRegistration(
+                                                                        correoElectronicoController
+                                                                            .text)));
                                                       } catch (e) {
                                                         showError(
                                                             context,

@@ -1,5 +1,4 @@
 import 'package:be_lot_system/main.dart';
-import 'package:be_lot_system/src/model/client.dart';
 import 'package:be_lot_system/src/ui/admin/create_client.dart';
 import 'package:be_lot_system/src/ui/admin/show_clients.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,10 +12,7 @@ class IndexAdmin extends StatefulWidget {
 
 class _IndexAdminState extends State<IndexAdmin> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = <Widget>[
-    ShowClients(),
-    CreateClient(Client(null, '', '', '', '', '', '', '', ''))
-  ];
+  static List<Widget> _widgetOptions = <Widget>[ShowClients(), CreateClient()];
 
   void _onItemTapped(int index) {
     setState(() {
