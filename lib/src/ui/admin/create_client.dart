@@ -1,5 +1,6 @@
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:flutter/material.dart';
 
 class CreateClient extends StatefulWidget {
@@ -14,6 +15,8 @@ class _CreateClientState extends State<CreateClient> {
   TextEditingController nombreController;
   TextEditingController apellidoPaternoController;
   TextEditingController apellidoMaternoController;
+  LocalAuthentication _localAuthentication;
+  bool _isBiometricAvailable = false;
 
   @override
   void initState() {
@@ -22,6 +25,12 @@ class _CreateClientState extends State<CreateClient> {
     nombreController = new TextEditingController();
     apellidoPaternoController = new TextEditingController();
     apellidoMaternoController = new TextEditingController();
+    _localAuthentication = LocalAuthentication();
+    _localAuthentication.canCheckBiometrics.then((b) {
+      setState(() {
+        _isBiometricAvailable = b;
+      });
+    });
   }
 
   @override
@@ -120,84 +129,42 @@ class _CreateClientState extends State<CreateClient> {
                               borderRadius: BorderRadius.circular(25.0),
                               color: Colors.purple[200],
                               child: MaterialButton(
-                                  padding: EdgeInsets.fromLTRB(
-                                      30.0, 15.0, 30.0, 15.0),
-                                  child: Text(
-                                    'Crear',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
+                                  padding:
+                                      EdgeInsets.fromLTRB(30.0, 7.0, 30.0, 7.0),
+                                  child: Container(
+                                      width: 70.0,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Crear',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 15.0,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Padding(
+                                              padding: EdgeInsets.only(left: 7),
+                                              child: Icon(Icons.fingerprint,
+                                                  color: Colors.white))
+                                        ],
+                                      )),
                                   onPressed: () async {
-                                    if (nombreController.text.trim().length ==
-                                            0 ||
-                                        apellidoPaternoController.text
-                                                .trim()
-                                                .length ==
-                                            0 ||
-                                        apellidoMaternoController.text
-                                                .trim()
-                                                .length ==
-                                            0 ||
-                                        correoElectronicoController.text
-                                                .trim()
-                                                .length ==
-                                            0) {
-                                      showError(
-                                          context, 'Faltan datos por ingresar');
-                                    } else {
-                                      bool emailValid = RegExp(
-                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                          .hasMatch(
-                                              correoElectronicoController.text);
-                                      if (emailValid) {
-                                        clientRef
-                                            .orderByChild("correoElectronico")
-                                            .equalTo(correoElectronicoController
-                                                .text)
-                                            .limitToFirst(1)
-                                            .once()
-                                            .then((snapshot) {
-                                          try {
-                                            List<dynamic> curretList = [];
-                                            snapshot.value
-                                                .forEach((orderId, orderData) {
-                                              curretList.add(orderData);
-                                            });
-                                            showWarning(context,
-                                                'El correo electrónico ya existe');
-                                          } catch (e) {
-                                            clientRef.push().set({
-                                              'nombre': nombreController.text,
-                                              'apellidoPaterno':
-                                                  apellidoPaternoController
-                                                      .text,
-                                              'apellidoMaterno':
-                                                  apellidoMaternoController
-                                                      .text,
-                                              'latitud': '',
-                                              'longitud': '',
-                                              'correoElectronico':
-                                                  correoElectronicoController
-                                                      .text,
-                                              'telefono': '',
-                                              'foto': '',
-                                            });
-                                            Navigator.of(context)
-                                                .pushAndRemoveUntil(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            IndexAdmin()),
-                                                    (Route<dynamic> route) =>
-                                                        false);
-                                          }
-                                        });
+                                    if (_isBiometricAvailable) {
+                                      bool didAuthenticate =
+                                          await _localAuthentication
+                                              .authenticateWithBiometrics(
+                                                  localizedReason:
+                                                      'Identifíquese');
+                                      if (didAuthenticate) {
+                                        RegisterClient();
                                       } else {
-                                        showError(context,
-                                            'Ingrese un correo electrónico válido');
+                                        showError(context, 'Identifíquese');
                                       }
+                                    } else {
+                                      showError(context, 'Identifíquese');
                                     }
                                   })))
                     ])))
@@ -285,5 +252,51 @@ class _CreateClientState extends State<CreateClient> {
                         ]))
               ]);
         });
+  }
+
+  // ignore: non_constant_identifier_names
+  void RegisterClient() {
+    if (nombreController.text.trim().length == 0 ||
+        apellidoPaternoController.text.trim().length == 0 ||
+        apellidoMaternoController.text.trim().length == 0 ||
+        correoElectronicoController.text.trim().length == 0) {
+      showError(context, 'Faltan datos por ingresar');
+    } else {
+      bool emailValid = RegExp(
+              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+          .hasMatch(correoElectronicoController.text);
+      if (emailValid) {
+        clientRef
+            .orderByChild("correoElectronico")
+            .equalTo(correoElectronicoController.text)
+            .limitToFirst(1)
+            .once()
+            .then((snapshot) {
+          try {
+            List<dynamic> curretList = [];
+            snapshot.value.forEach((orderId, orderData) {
+              curretList.add(orderData);
+            });
+            showWarning(context, 'El correo electrónico ya existe');
+          } catch (e) {
+            clientRef.push().set({
+              'nombre': nombreController.text,
+              'apellidoPaterno': apellidoPaternoController.text,
+              'apellidoMaterno': apellidoMaternoController.text,
+              'latitud': '',
+              'longitud': '',
+              'correoElectronico': correoElectronicoController.text,
+              'telefono': '',
+              'foto': '',
+            });
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => IndexAdmin()),
+                (Route<dynamic> route) => false);
+          }
+        });
+      } else {
+        showError(context, 'Ingrese un correo electrónico válido');
+      }
+    }
   }
 }
