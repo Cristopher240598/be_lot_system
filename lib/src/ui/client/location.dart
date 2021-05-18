@@ -59,9 +59,42 @@ class _ShowLocationState extends State<ShowLocation> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_ubicacion));
   }
 
+  void permisos() async {
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.DENIED) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.GRANTED) {
+        showWarning(context, 'Es necesaria la localización');
+        Navigator.pop(context);
+        return;
+      }
+    }
+
+    if (_permissionGranted == PermissionStatus.DENIED_FOREVER) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        showWarning(context, 'Es necesaria la localización');
+        Navigator.pop(context);
+        return;
+      }
+    }
+  }
+
   @override
   void initState() {
     location = new Location();
+    permisos();
     setInitialLocation();
     super.initState();
   }
@@ -150,5 +183,46 @@ class _ShowLocationState extends State<ShowLocation> {
                             }))))
           ])))
         ]));
+  }
+
+  void showWarning(BuildContext ctxt, String message) {
+    showDialog(
+        context: ctxt,
+        builder: (ctxt) {
+          return SimpleDialog(
+              title: Center(
+                  child: new Image.asset(
+                'assets/warning.png',
+                width: 50,
+              )),
+              children: [
+                Padding(
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(message),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(ctxt);
+                                  },
+                                  child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 20, 13, 0),
+                                      child: Text(
+                                        'OK',
+                                        style: TextStyle(
+                                            color: Colors.lightBlueAccent,
+                                            fontSize: 18),
+                                      )),
+                                )
+                              ])
+                        ]))
+              ]);
+        });
   }
 }
