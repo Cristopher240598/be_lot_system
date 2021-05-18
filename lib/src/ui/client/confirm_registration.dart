@@ -1,4 +1,4 @@
-import 'package:be_lot_system/src/ui/client/complete_registration.dart';
+import 'package:be_lot_system/src/ui/client/location.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
@@ -157,7 +157,8 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                         clientRef
                                             .orderByChild("correoElectronico")
                                             .equalTo(correoElectronicoController
-                                                .text)
+                                                .text
+                                                .trim())
                                             .limitToFirst(1)
                                             .once()
                                             .then((snapshot) {
@@ -170,7 +171,8 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                             //Check name
                                             clientRef
                                                 .orderByChild("nombre")
-                                                .equalTo(nombreController.text)
+                                                .equalTo(nombreController.text
+                                                    .trim())
                                                 .limitToFirst(1)
                                                 .once()
                                                 .then((snapshot) {
@@ -186,7 +188,8 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                                         "apellidoPaterno")
                                                     .equalTo(
                                                         apellidoPaternoController
-                                                            .text)
+                                                            .text
+                                                            .trim())
                                                     .limitToFirst(1)
                                                     .once()
                                                     .then((snapshot) {
@@ -203,7 +206,8 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                                             "apellidoMaterno")
                                                         .equalTo(
                                                             apellidoMaternoController
-                                                                .text)
+                                                                .text
+                                                                .trim())
                                                         .limitToFirst(1)
                                                         .once()
                                                         .then((snapshot) {
@@ -220,7 +224,7 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                                                             context,
                                                             MaterialPageRoute(
                                                                 builder: (context) =>
-                                                                    CompleteRegistration(
+                                                                    ShowLocation(
                                                                         correoElectronicoController
                                                                             .text)));
                                                       } catch (e) {

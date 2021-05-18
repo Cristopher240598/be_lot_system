@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 class CompleteRegistration extends StatefulWidget {
   final String correoElectronico;
+  final String latitud;
+  final String longitud;
 
-  CompleteRegistration(this.correoElectronico);
+  CompleteRegistration(this.correoElectronico, this.latitud, this.longitud);
 
   @override
   _CompleteRegistrationState createState() => _CompleteRegistrationState();
@@ -124,14 +126,6 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                     )))
                           ]))
                         ]),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: Text('Domicilio:',
-                              style: TextStyle(
-                                  fontSize: 15.0, color: Colors.grey[600]))),
-                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 20),
                       child: Align(
