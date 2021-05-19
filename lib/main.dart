@@ -1,5 +1,6 @@
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
 import 'package:be_lot_system/src/ui/client/confirm_registration.dart';
+import 'package:be_lot_system/src/ui/client/index_client.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ void main() async {
 }
 
 bool loggedIn = false;
+String mail;
 
 class Login extends StatelessWidget {
   const Login({Key key}) : super(key: key);
@@ -42,8 +44,10 @@ class _LoggedState extends State<Logged> {
     this.setState(() {
       if (prefs.getString("mail") != null) {
         loggedIn = true;
+        mail = prefs.getString("mail");
       } else {
         loggedIn = false;
+        mail = null;
       }
     });
   }
@@ -51,7 +55,11 @@ class _LoggedState extends State<Logged> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      home: loggedIn ? IndexAdmin() : Form(),
+      home: loggedIn
+          ? mail == 'admin@beiotsystem.com'
+              ? IndexAdmin()
+              : IndexClient()
+          : Form(),
     );
   }
 
@@ -60,6 +68,7 @@ class _LoggedState extends State<Logged> {
     super.initState();
     this._function();
     loggedIn = false;
+    mail = null;
     database.setPersistenceEnabled(true);
     database.setPersistenceCacheSizeBytes(10000000);
   }
@@ -162,13 +171,26 @@ class _FormState extends State<Form> {
 
                                       if (userCredential != null) {
                                         _ensureLoggedIn(userCredential);
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        IndexAdmin()),
-                                                (Route<dynamic> route) =>
-                                                    false);
+                                        if (mailController.text ==
+                                            'admin@beiotsystem.com') {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              IndexAdmin()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        } else {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              IndexClient()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        }
                                       }
                                     } catch (e) {
                                       if (e.code == 'user-not-found') {
