@@ -1,9 +1,14 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:be_lot_system/src/model/client.dart';
 import 'package:be_lot_system/src/ui/admin/edit_client.dart';
+import 'package:firebase_admin/firebase_admin.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'index_admin.dart';
 
@@ -140,11 +145,15 @@ class _ShowClientsState extends State<ShowClients> {
                                             MainAxisAlignment.spaceAround,
                                         children: [
                                           CircleAvatar(
-                                            backgroundImage:
-                                                AssetImage('assets/logo.png'),
-                                            radius: 28.0,
-                                            backgroundColor: Colors.transparent,
-                                          )
+                                              backgroundColor: Colors.purple,
+                                              radius: 28.0,
+                                              child: CircleAvatar(
+                                                backgroundImage: NetworkImage(
+                                                    '${items[position].foto}'),
+                                                radius: 27.5,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                              ))
                                         ],
                                       ),
                                       onTap: () => _editClient(
@@ -168,6 +177,34 @@ class _ShowClientsState extends State<ShowClients> {
   }
 
   void _deleteClient(BuildContext context, Client client, int position) async {
+    /*if (client.foto.length != 0) {
+      String url = client.foto;
+      String filePath = url.replaceAll(
+          new RegExp(
+              'https://firebasestorage.googleapis.com/v0/b/pa-e1-evaluacion-1.appspot.com/o/'),
+          '');
+      filePath = filePath.replaceAll(new RegExp('%2F'), '/');
+      filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+      filePath = filePath.replaceAll(new RegExp('%20'), ' ');
+      filePath = filePath.replaceAll(new RegExp('%3A'), ':');
+      print('-------------------------------');
+      print(filePath);
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child(filePath);
+      UploadTask uploadTask =
+          ref.delete().then((_) => print('Imagen eliminada'));
+    }
+
+
+    var app = FirebaseAdmin.instance.initializeApp(AppOptions(
+      credential: FirebaseAdmin.instance.certFromPath('service-account.json'),
+    ));
+
+    var link = await app.auth().getUserByEmail(client.correoElectronico);
+
+    print(link);
+
+
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => IndexAdmin()),
         (Route<dynamic> route) => false);
@@ -175,72 +212,95 @@ class _ShowClientsState extends State<ShowClients> {
       setState(() {
         items.removeAt(position);
       });
-    });
+    });*/
   }
 
   void _viewClient(BuildContext ctxt, Client client) {
+    double doubleLat = double.tryParse(client.latitud) ?? 19.293590;
+    double doubleLong = double.tryParse(client.longitud) ?? -99.654380;
     showDialog(
         context: ctxt,
         builder: (ctxt) {
           return SimpleDialog(
               title: Center(
-                child: Text(client.nombre +
-                    ' ' +
-                    client.apellidoPaterno +
-                    ' ' +
-                    client.apellidoMaterno),
+                child: Column(children: [
+                  Text(client.nombre),
+                  Text(client.apellidoPaterno + ' ' + client.apellidoMaterno)
+                ]),
               ),
               children: [
-                Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Correo electrónico: ' + client.correoElectronico,
-                            style: TextStyle(fontSize: 15.0, height: 1.5)),
-                        Text('Teléfono: ' + client.telefono,
-                            style: TextStyle(fontSize: 15.0, height: 1.5)),
-                        if (client.foto.length == 0)
-                          Center(
-                              child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                  child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/client.png'),
-                                    radius: 50.0,
-                                    backgroundColor: Colors.transparent,
-                                  )))
-                        else
-                          Center(
-                              child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                  child: CircleAvatar(
-                                    backgroundImage:
-                                        AssetImage('assets/logo.png'),
-                                    radius: 50.0,
-                                    backgroundColor: Colors.transparent,
-                                  ))),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                SingleChildScrollView(
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(ctxt);
-                              },
-                              child: Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 15, 13, 0),
-                                  child: Text(
-                                    'OK',
-                                    style: TextStyle(
-                                        color: Colors.lightBlueAccent,
-                                        fontSize: 18),
-                                  )),
+                            if (client.foto.length != 0)
+                              Center(
+                                  child: Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 2, 0, 8),
+                                      child: CircleAvatar(
+                                          radius: 51.0,
+                                          backgroundColor: Colors.purple,
+                                          child: CircleAvatar(
+                                            backgroundImage:
+                                                NetworkImage(client.foto),
+                                            radius: 50.5,
+                                            backgroundColor: Colors.transparent,
+                                          )))),
+                            Text(
+                                'Correo electrónico: ' +
+                                    client.correoElectronico,
+                                style: TextStyle(fontSize: 15.0, height: 1.5)),
+                            if (client.telefono.length != 0)
+                              Text('Teléfono: ' + client.telefono,
+                                  style:
+                                      TextStyle(fontSize: 15.0, height: 1.5)),
+                            if (client.latitud.length != 0 &&
+                                client.longitud.length != 0)
+                              Text('Domicilio: ',
+                                  style:
+                                      TextStyle(fontSize: 15.0, height: 1.5)),
+                            if (client.latitud.length != 0 &&
+                                client.longitud.length != 0)
+                              Container(
+                                  width: 300.0,
+                                  height: 300.0,
+                                  child: Center(
+                                      child: GoogleMap(
+                                    markers: {
+                                      Marker(
+                                          markerId: MarkerId('locClient'),
+                                          position:
+                                              LatLng(doubleLat, doubleLong))
+                                    },
+                                    mapType: MapType.normal,
+                                    initialCameraPosition: CameraPosition(
+                                        target: LatLng(doubleLat, doubleLong),
+                                        zoom: 15),
+                                  ))),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(ctxt);
+                                  },
+                                  child: Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(0, 15, 13, 0),
+                                      child: Text(
+                                        'OK',
+                                        style: TextStyle(
+                                            color: Colors.lightBlueAccent,
+                                            fontSize: 18),
+                                      )),
+                                )
+                              ],
                             )
                           ],
-                        )
-                      ],
-                    ))
+                        )))
               ]);
         });
   }

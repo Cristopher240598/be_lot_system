@@ -119,7 +119,7 @@ class _ShowLocationState extends State<ShowLocation> {
                           children: [
                             Expanded(
                                 child: Center(
-                              child: Text('Localización',
+                              child: Text('Domicilio',
                                   style: TextStyle(fontSize: 18.0)),
                             ))
                           ])))),
@@ -156,9 +156,6 @@ class _ShowLocationState extends State<ShowLocation> {
                             ),
                             onPressed: () {
                               if (newLat != null && newLong != null) {
-                                print('+++++++++++');
-                                print(newLat);
-                                print(newLong);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -168,9 +165,6 @@ class _ShowLocationState extends State<ShowLocation> {
                                                 newLat,
                                                 newLong)));
                               } else {
-                                print('------------');
-                                print(lat.toString());
-                                print(long.toString());
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

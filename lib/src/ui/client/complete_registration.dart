@@ -86,18 +86,21 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                     Container(
                         child: Align(
                             alignment: Alignment.topLeft,
-                            child: Theme(
-                                data: ThemeData(primaryColor: Colors.purple),
-                                child: TextField(
-                                  autofocus: true,
-                                  controller: numeroTelefonoController,
-                                  style: TextStyle(fontSize: 17.0),
-                                  decoration: InputDecoration(
-                                    labelText: 'Número de teléfono:',
-                                  ),
-                                  keyboardType: TextInputType.phone,
-                                  textInputAction: TextInputAction.next,
-                                )))),
+                            child: Container(
+                                width: 130.0,
+                                child: Theme(
+                                    data:
+                                        ThemeData(primaryColor: Colors.purple),
+                                    child: TextField(
+                                      autofocus: true,
+                                      controller: numeroTelefonoController,
+                                      style: TextStyle(fontSize: 17.0),
+                                      decoration: InputDecoration(
+                                        labelText: 'Número de teléfono:',
+                                      ),
+                                      keyboardType: TextInputType.phone,
+                                      textInputAction: TextInputAction.next,
+                                    ))))),
                     Padding(
                         padding: EdgeInsets.only(top: 20),
                         child: Column(children: [
@@ -282,14 +285,12 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                               .getInstance();
                                           prefs.setString(
                                               "mail", widget.correoElectronico);
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                              IndexClient()),
-                                                  (Route<dynamic> route) =>
-                                                      false);
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      IndexClient(widget
+                                                          .correoElectronico)),
+                                              (Route<dynamic> route) => false);
                                         }
                                       } on FirebaseAuthException catch (e) {
                                         if (e.code == 'weak-password') {

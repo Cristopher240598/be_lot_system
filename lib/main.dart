@@ -58,7 +58,7 @@ class _LoggedState extends State<Logged> {
       home: loggedIn
           ? mail == 'admin@beiotsystem.com'
               ? IndexAdmin()
-              : IndexClient()
+              : IndexClient(mail)
           : Form(),
     );
   }
@@ -187,7 +187,9 @@ class _FormState extends State<Form> {
                                                   MaterialPageRoute(
                                                       builder:
                                                           (context) =>
-                                                              IndexClient()),
+                                                              IndexClient(
+                                                                  mailController
+                                                                      .text)),
                                                   (Route<dynamic> route) =>
                                                       false);
                                         }

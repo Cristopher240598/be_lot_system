@@ -41,6 +41,7 @@ dependencies:
   google_maps_flutter:
   geolocator:
   location: ^2.3.5
+  firebase_admin: ^0.1.4
 
 
 dev_dependencies:
