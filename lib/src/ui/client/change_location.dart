@@ -1,6 +1,7 @@
 import 'package:be_lot_system/src/ui/client/index_client.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ChangeLocation extends StatefulWidget {
@@ -111,6 +112,11 @@ class _ChangeLocationState extends State<ChangeLocation> {
                                 'telefono': widget.telefono,
                                 'foto': widget.foto,
                               });
+                              Fluttertoast.showToast(
+                                  msg: "Cambios guardados",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1);
                               Navigator.of(context).pushAndRemoveUntil(
                                   MaterialPageRoute(
                                       builder: (context) => IndexClient(

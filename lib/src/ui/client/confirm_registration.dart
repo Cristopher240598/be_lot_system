@@ -44,7 +44,7 @@ class _ConfirmRegistrationState extends State<ConfirmRegistration> {
                         children: [
                           Expanded(
                               child: Center(
-                            child: Text('Confirmar registro',
+                            child: Text('Confirmar pre-registro',
                                 style: TextStyle(fontSize: 18.0)),
                           ))
                         ]))),

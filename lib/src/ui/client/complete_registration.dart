@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -346,6 +347,11 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
           'telefono': numeroTelefonoController.text,
           'foto': foto,
         });
+        Fluttertoast.showToast(
+            msg: "Registro exitoso",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1);
       } catch (e) {
         print(e);
       }

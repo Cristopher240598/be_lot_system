@@ -1,5 +1,6 @@
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -289,6 +290,11 @@ class _CreateClientState extends State<CreateClient> {
               'telefono': '',
               'foto': '',
             });
+            Fluttertoast.showToast(
+                msg: "Pre-registro exitoso",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1);
             Navigator.of(context).pushAndRemoveUntil(
                 MaterialPageRoute(builder: (context) => IndexAdmin()),
                 (Route<dynamic> route) => false);

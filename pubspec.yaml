@@ -42,6 +42,7 @@ dependencies:
   geolocator:
   location: ^2.3.5
   firebase_admin: ^0.1.4
+  fluttertoast: ^8.0.7
 
 
 dev_dependencies:

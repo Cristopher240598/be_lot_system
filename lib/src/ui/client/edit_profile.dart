@@ -4,6 +4,7 @@ import 'package:be_lot_system/src/ui/client/index_client.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
@@ -333,5 +334,10 @@ class _EditProfileState extends State<EditProfile> {
       'telefono': numeroTelefonoController.text,
       'foto': foto,
     });
+    Fluttertoast.showToast(
+        msg: "Cambios guardados",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1);
   }
 }
