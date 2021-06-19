@@ -177,7 +177,7 @@ class _ShowClientsState extends State<ShowClients> {
   }
 
   void _deleteClient(BuildContext context, Client client, int position) async {
-    /*if (client.foto.length != 0) {
+    if (client.foto.length != 0) {
       String url = client.foto;
       String filePath = url.replaceAll(
           new RegExp(
@@ -195,15 +195,15 @@ class _ShowClientsState extends State<ShowClients> {
           ref.delete().then((_) => print('Imagen eliminada'));
     }
 
-
+/*
     var app = FirebaseAdmin.instance.initializeApp(AppOptions(
       credential: FirebaseAdmin.instance.certFromPath('service-account.json'),
     ));
 
     var link = await app.auth().getUserByEmail(client.correoElectronico);
 
-    print(link);
-
+    print(link.uid);
+*/
 
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => IndexAdmin()),
@@ -212,7 +212,7 @@ class _ShowClientsState extends State<ShowClients> {
       setState(() {
         items.removeAt(position);
       });
-    });*/
+    });
   }
 
   void _viewClient(BuildContext ctxt, Client client) {
