@@ -181,7 +181,7 @@ class _ShowClientsState extends State<ShowClients> {
       String url = client.foto;
       String filePath = url.replaceAll(
           new RegExp(
-              'https://firebasestorage.googleapis.com/v0/b/pa-e1-evaluacion-1.appspot.com/o/'),
+              'https://firebasestorage.googleapis.com/v0/b/be-iot-system.appspot.com/o/'),
           '');
       filePath = filePath.replaceAll(new RegExp('%2F'), '/');
       filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
@@ -191,7 +191,6 @@ class _ShowClientsState extends State<ShowClients> {
       print(filePath);
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference ref = storage.ref().child(filePath);
-      UploadTask uploadTask =
           ref.delete().then((_) => print('Imagen eliminada'));
     }
 
