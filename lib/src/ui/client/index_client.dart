@@ -1,6 +1,7 @@
 import 'package:be_lot_system/main.dart';
 import 'package:be_lot_system/src/ui/client/ConstantsMenu.dart';
 import 'package:be_lot_system/src/ui/client/change_location.dart';
+import 'package:be_lot_system/src/ui/client/credits.dart';
 import 'package:be_lot_system/src/ui/client/edit_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -458,6 +459,10 @@ try{
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Login()),
               (Route<dynamic> route) => false);
+    }
+    if (choice == ConstantsMenu.creditos) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Credits()));
     }
   }
 }

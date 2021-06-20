@@ -1,6 +1,7 @@
 import 'package:be_lot_system/src/ui/admin/index_admin.dart';
 import 'package:be_lot_system/src/ui/client/confirm_registration.dart';
 import 'package:be_lot_system/src/ui/client/index_client.dart';
+import 'package:be_lot_system/src/ui/client/optionsAR.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -231,7 +232,39 @@ class _FormState extends State<Form> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     ConfirmRegistration()));
-                                      })))
+                                      }))),
+                          Padding(
+                              padding: EdgeInsets.only(top: 30),
+                              child: Row(children: [
+                                Expanded(
+                                    child: Center(
+                                        child: Material(
+                                            color: Colors.white,
+                                            child: Center(
+                                                child: Ink(
+                                                    decoration:
+                                                        const ShapeDecoration(
+                                                            shape:
+                                                                CircleBorder(),
+                                                            color: Colors
+                                                                .purpleAccent),
+                                                    child: IconButton(
+                                                      icon: const Icon(Icons
+                                                          .add_to_home_screen_rounded),
+                                                      color: Colors.white,
+                                                      padding:
+                                                          EdgeInsets.all(10.0),
+                                                      iconSize: 40.0,
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        OptAR()));
+                                                      },
+                                                    )))))),
+                              ]))
                         ]))))));
   }
 
