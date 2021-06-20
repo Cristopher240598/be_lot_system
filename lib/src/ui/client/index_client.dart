@@ -126,7 +126,7 @@ try{
 
     x = double.parse(elimes);
     y = double.parse(litmes);
-    double inter = x+y;
+    double inter = x+y+0;
     a= (x*100)/inter;
     b= (y*100)/inter;
     List<dynamic> clienteID = [];
